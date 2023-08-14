@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Welcome To Rosetta Stone!</title>
+    <link rel="icon" type="image/png" href="https://kjzabinsky.github.io/RosettaStoneLoader/Other-rosetta-stone-icon.png">
+    <style>
+        body {
+            background-color: #f1f3f6;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .loader {
+            display: none; /* Hide the loader initially */
+            width: 45px;
+            height: 45px;
+            border: 6px solid #f1f3f6;
+            border-top-color: #BBBBBB;
+            border-radius: 50%;
+            animation: spin 2s linear infinite;
+        }
+
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        .message-window {
+            display: none; /* Hide the message window initially */
+            max-width: 400px;
+            background-color: white;
+            border: 2px solid #BBBBBB;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .failed-title {
+            font-size: 25px;
+            font-weight: bold;
+            color: black;
+            margin-bottom: 20px;
+        }
+
+        .failed-message {
+            font-size: 20px;
+            color: black;
+            margin-bottom: 20px;
+        }
+
+        .line {
+            width: 90%;
+            height: 2px;
+            background-color: #BBBBBB;
+            margin: 0 auto 20px;
+        }
+
+        .button-container {
+            display: flex;
+            flex-direction: column;
+            margin-top: 10px;
+        }
+
+        .action-button {
+            margin-top: 10px;
+            padding: 10px 20px;
+            font-size: 14px;
+            font-weight: bold;
+            color: black;
+            background-color: white;
+            border: 1px solid #BBBBBB;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .cancel-button {
+            background-color: white;
+            color: black;
+            border: 1px solid #BBBBBB;
+        }
+
+        .try-again-button {
+            display: none; /* Hide the Try Again button */
+        }
+    </style>
+    <script>
+        var isLoading = false; // Track if the loading screen is active
+
+        function openLink() {
+            var urlParams = new URLSearchParams(window.location.search);
+            var link = urlParams.get("link");
+            if (link) {
+                setTimeout(function () {
+                    window.location.href = link;
+                }, 30000); // Delay the redirection
+            }
+        }
+
+        function showLoadingScreen() {
+            isLoading = true;
+
+            var loader = document.querySelector('.loader');
+            var messageWindow = document.querySelector('.message-window');
+            
+            if (loader && messageWindow) {
+                loader.style.display = "block"; // Show the loader
+                messageWindow.style.display = "none"; // Hide the message window
+            }
+        }
+
+        function hideLoadingScreen() {
+            isLoading = false;
+            var loader = document.querySelector('.loader');
+            var messageWindow = document.querySelector('.message-window');
+            
+            if (loader && messageWindow) {
+                loader.style.display = "none"; // Hide the loader
+                messageWindow.style.display = "block"; // Show the message window
+            }
+        }
+
+        window.onload = function () {
+            openLink(); // Call the openLink function on start
+            showLoadingScreen();
+            setTimeout(function () {
+                if (!isLoading) {
+                    return; // If spacebar was pressed during the initial loading period, do nothing
+                }
+                hideLoadingScreen();
+            }, 2000); // 2 seconds loading delay
+        };
+
+        document.onkeydown = function (e) {
+            if (e.key === " ") {
+                e.preventDefault();
+                var loader = document.querySelector('.loader');
+                var messageWindow = document.querySelector('.message-window');
+                
+                if (loader && messageWindow) {
+                    loader.style.display = "block"; // Show the loader
+                    messageWindow.style.display = "none"; // Hide the message window
+                }
+            }
+        };
+
+        // Function to handle Cancel button click
+        function handleCancelClick() {
+            window.location.href = "https://www.rosettastone.com"; // Redirect to Rosetta Stone website
+        }
+    </script>
+</head>
+<body>
+    <div class="loader"></div>
+    <div class="message-window">
+        <div class="failed-title">⚠️ Connection Error</div>
+        <div class="line"></div>
+        <div class="failed-message">Failed to load Rosetta Stone. Please try again later.</div>
+        <div class="button-container">
+            <button class="action-button cancel-button" onclick="handleCancelClick()">Cancel</button>
+        </div>
+    </div>
+</body>
+</html>
